@@ -19,7 +19,7 @@ const router = createRouter({
       path: '/Support',
       name: 'support',
       component: SupportView
-    }
+    },
   ]
 })
 

@@ -24,6 +24,7 @@
 					accept=".exe"
 					id="choseexe"
 					style="display: none;"
+					@change="FFmpegChoise"
 					/>
 				</article>
 			</div>
@@ -56,4 +57,26 @@ aside
 		color: darkslateblue
 </style>
 <script>
+import { ref } from 'vue';
+import { GetFFmpegStore } from '@/stores/FFmpegStore';
+export default{
+	setup(){
+		const FFmpegStore = GetFFmpegStore()
+		function FFmpegChoise(event){
+			const name = event.target.files[0].name
+			if (name === 'ffmpeg.exe'){
+				console.log('correct')
+
+				FFmpegStore.FFmpegPath = `${event.target.files[0].path}`
+			}
+			else{
+				console.log('incorrect')
+			}
+			console.log(event.target)
+		}
+		return{
+			FFmpegChoise
+		}
+	}
+}
 </script>
