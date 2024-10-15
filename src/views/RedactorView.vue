@@ -1,5 +1,5 @@
 <template>
-	<div>{{ FFmpegStore.FFmpegPath }}</div>
+	<div>{{ FFmpegStore.IsSignedIn }}</div>
 </template>
 <script>
 import { GetFFmpegStore } from '@/stores/FFmpegStore';

@@ -1,6 +1,40 @@
 <script>
+import { ref } from 'vue';
 export default {
 	name: "SignUpFormComponent",
+	setup(){
+		const username = ref('')
+		const password = ref('')
+		const changedusername = (event) => {
+			username.value = event.target.value
+			console.log(username.value)
+		}
+		const changedpassword = (event) => {
+			password.value = event.target.value
+			console.log(password.value)
+		}
+		const Submit = (event) => {
+			event.preventDefault()
+			console.log("submiting")
+		}
+		const LogIn = () => {
+			console.log("Logging")
+			console.log(username.value)
+			console.log(password.value)
+		}
+		const SignUp = () => {
+			console.log("Signing")
+			console.log(username.value)
+			console.log(password.value)
+		}
+		return {
+			Submit,
+			LogIn,
+			SignUp,
+			changedusername,
+			changedpassword
+		}
+	}
 }
 </script>
 <template>
@@ -12,20 +46,20 @@ export default {
 				</div>
 			</div>
 			<h2>Acount form</h2>
-			<form>
+			<form @submit="Submit">
 				<div class="field">
 					<label for="username">username: </label>
-					<input type="text" id="username" v-model="username" required/>
+					<input @change="changedusername" type="text" id="username" v-model="username" required/>
 				</div>
 				<div class="field">
-					<label for="password">password: </label>
-					<input type="text" id="password" v-model="password" required/>
+					<label for="password" >password: </label>
+					<input @change="changedpassword" type="text" id="password" v-model="password" required/>
 				</div>
 				<div class="submit">
-					<label for="submit">Log in</label>
-					<button id="submit" type="submit" style="display: none;"></button>
-					<label for="submit">Signup</label>
-					<button id="submit" type="submit" style="display: none;"></button>
+					<label for="submit" @click="LogIn">Log in</label>
+					<button id="submit" style="display: none;"></button>
+					<label for="submit" @click="SignUp">Signup</label>
+					<button id="submit" style="display: none;"></button>
 				</div>
 			</form>
 		</div>

@@ -3,9 +3,13 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import SignUpFormComponent from './components/SignUpFormComponent.vue';
+import { GetFFmpegStore } from '@/stores/FFmpegStore';
 
 function ToggleForm(){
 	showSignUp.value = !showSignUp.value
+}
+function ToggleLogedIn(){
+	GetFFmpegStore.value = !GetFFmpegStore
 }
 const showSignUp = ref(false);
 </script>
@@ -23,7 +27,7 @@ const showSignUp = ref(false);
     </nav>
   </header>
   <router-view />
-  <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm"/>
+  <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm" @login="ToggleLogedIn"/>
 </template>
 
 <style scoped lang="sass">
