@@ -1,6 +1,13 @@
 <!-- App.vue -->
 <script setup>
+import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import SignUpFormComponent from './components/SignUpFormComponent.vue';
+
+function ToggleForm(){
+	showSignUp.value = !showSignUp.value
+}
+const showSignUp = ref(false);
 </script>
 
 <template>
@@ -11,25 +18,40 @@ import { RouterLink, RouterView } from 'vue-router';
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/Redactor">Redactor</router-link></li>
         <li><router-link to="/Support">Support</router-link></li>
+        <li class="Login_button" @click="ToggleForm">Login</li>
       </ul>
     </nav>
   </header>
   <router-view />
+  <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm"/>
 </template>
 
 <style scoped lang="sass">
-@import "../src/assets/vars.sass"
+@import "../src/assets/main.sass"
 header
-  background-color: $dark2
+	background-color: $dark2
 nav
-  display: flex
-  justify-content: space-between
-  padding: 20px
+	display: flex
+	justify-content: space-between
+	padding: 20px
 img
-  display: block
-ul
-  display: flex
-li
-  list-style: none
-  padding: 10px
+	display: block
+ul 
+	display: flex
+	li
+		list-style: none
+		padding: 10px
+		&.Login_button
+			border-radius: 25%
+			border: solid 2px $text-color
+			background-color:$text-color
+			color: $dark2
+			&:hover
+				border: solid 2px $text-color
+				background-color: $dark2
+				color: $text-color
+.signup
+	z-index: 10
+	position: absolute
+	margin: auto
 </style>

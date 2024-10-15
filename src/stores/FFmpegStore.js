@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 
 export const GetFFmpegStore = defineStore('FFmpegStore', {
 	state: () => ({
-		FFmpegPath: 'PATH'
+		FFmpegPath: 'PATH',
+		IsSignedInd: false
 	})
 })
