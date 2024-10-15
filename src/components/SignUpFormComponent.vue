@@ -1,8 +1,10 @@
 <script>
 import { ref } from 'vue';
+import { GetFFmpegStore } from '@/stores/FFmpegStore';
 export default {
 	name: "SignUpFormComponent",
 	setup(){
+		const store = GetFFmpegStore()
 		const username = ref('')
 		const password = ref('')
 		const changedusername = (event) => {
@@ -16,6 +18,7 @@ export default {
 		const Submit = (event) => {
 			event.preventDefault()
 			console.log("submiting")
+			store.IsSignedIn = true
 		}
 		const LogIn = () => {
 			console.log("Logging")
