@@ -34,6 +34,10 @@ const showSignUp = ref(false);
 @import "../src/assets/main.sass"
 header
 	background-color: $dark2
+	position: fixed
+	z-index: 5
+	width: 100%
+	top: 0
 nav
 	display: flex
 	justify-content: space-between
