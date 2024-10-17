@@ -2,11 +2,18 @@
 	<div class="container">
 		<aside class="actions">
 			<ul>
-				<li>scissors</li>
-				<li>scissors</li>
-				<li>scissors</li>
-				<li>scissors</li>
-				<li>scissors</li>
+				<li>
+					<img src="../assets/svgs/scissors-svgrepo-com.svg" alt="" width="30" style="display: block;">
+				</li>
+				<li>
+					<img src="../assets/svgs/fast-forward-button-svgrepo-com.svg" alt="" width="30" style="display: block;">
+				</li>
+				<li>
+					<img src="../assets/svgs/clock-circular-outline-svgrepo-com.svg" alt="" width="30" style="display: block;">
+				</li>
+				<li>
+					<img src="../assets/svgs/letter-t-svgrepo-com.svg" alt="" width="30" style="display: block;">
+				</li>
 			</ul>
 		</aside>
 		<main>ы</main>
@@ -54,6 +61,7 @@ export default{
 	background-color: $dark2
 	flex: 1 
 	display: flex
+	margin-top: 80px
 	ul
 		margin: auto
 		list-style: none
@@ -62,6 +70,8 @@ export default{
 			padding: 20px 0
 			border-bottom: solid $text-color 1px
 			border-top: solid $text-color 1px
+			display: flex
+			justify-content: center
 
 main
 	flex: 15
