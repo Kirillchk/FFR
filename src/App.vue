@@ -17,7 +17,7 @@ const showSignUp = ref(false);
 <template>
   <header>
     <nav>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="" style="height: 40px;">
+      <img src="/FFRlogo.svg" alt="" style="height: auto;">
       <ul>
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/Redactor">Redactor</router-link></li>
@@ -33,7 +33,7 @@ const showSignUp = ref(false);
 <style scoped lang="sass">
 @import "../src/assets/main.sass"
 header
-	background-color: $dark2
+	background-color: $dark1
 	position: fixed
 	z-index: 5
 	width: 100%
@@ -41,7 +41,13 @@ header
 nav
 	display: flex
 	justify-content: space-between
-	padding: 20px
+	border-bottom: solid $white-trans 1px
+	> *
+		padding: 20px
+		height: 100%
+		padding: auto
+	img
+		border-right: solid $white-trans 1px
 img
 	display: block
 ul 

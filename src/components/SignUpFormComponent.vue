@@ -1,44 +1,80 @@
-<script>
+<script setup>
 import { ref } from 'vue';
 import { GetFFmpegStore } from '@/stores/FFmpegStore';
-export default {
-	name: "SignUpFormComponent",
-	setup(){
-		const store = GetFFmpegStore()
-		const username = ref('')
-		const password = ref('')
-		const changedusername = (event) => {
-			username.value = event.target.value
-			console.log(username.value)
-		}
-		const changedpassword = (event) => {
-			password.value = event.target.value
-			console.log(password.value)
-		}
-		const Submit = (event) => {
-			event.preventDefault()
-			console.log("submiting")
-			store.IsSignedIn = true
-		}
-		const LogIn = () => {
-			console.log("Logging")
-			console.log(username.value)
-			console.log(password.value)
-		}
-		const SignUp = () => {
-			console.log("Signing")
-			console.log(username.value)
-			console.log(password.value)
-		}
-		return {
-			Submit,
-			LogIn,
-			SignUp,
-			changedusername,
-			changedpassword
-		}
+
+const store = GetFFmpegStore();
+const username = ref('');
+const password = ref('');
+const cookie = ref('');
+
+const changedusername = (event) => {
+	username.value = event.target.value;
+	console.log(username.value);
+};
+
+const changedpassword = (event) => {
+	password.value = event.target.value;
+	console.log(password.value);
+};
+
+const Submit = (event) => {
+	event.preventDefault();
+	console.log("Submitting");
+	store.IsSignedIn = true;
+};
+
+const LogIn = async () => {
+	cookie.value = await getcookie(username.value, password.value);
+};
+
+async function getcookie(name, password) {
+	let ret;
+	const formdata = new FormData();
+	formdata.append("username", name);
+	formdata.append("password", password);
+	const requestOptions = {
+		method: "POST",
+		body: formdata,
+		redirect: "follow"
+	};
+
+	try {
+		const response = await fetch("http://26.234.86.94:8080/api/user/login", requestOptions);
+		ret = await response.text(); // Ensure this matches the expected data format
+		console.log(ret);
+	} catch (error) {
+		console.error(error);
 	}
+	return ret;
 }
+
+const SignUp = () => {
+	console.log("Signing up");
+	console.log(username.value);
+	console.log(password.value);
+	console.log(`cookie is ${cookie.value}`)
+/********************* */
+const myHeaders = new Headers();
+myHeaders.append("Cookie", cookie.value);
+
+const formdata = new FormData();
+formdata.append("Name", "folthen");
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: formdata,
+  redirect: "follow",
+  credentials: "include"
+};
+
+fetch("http://26.234.86.94:8080/api/videos/check/login", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+
+/**************** */
+};
 </script>
 <template>
 	<div class="popup">

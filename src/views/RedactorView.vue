@@ -1,57 +1,65 @@
+<script setup>
+const Addclip = () => {
+	console.log("addclip")
+}
+const Change_temp = () => {
+	console.log("temp")
+}
+const Add_text = () => {
+	console.log("Add_text")
+}
+const Record = () => {
+	console.log("Record")
+}
+const Cut = () => {
+	console.log("Cut")
+}
+const Add_sticker = () => {
+	console.log("Add_sticker")
+}
+const Rewind = () => {
+	console.log("Rewind")
+}
+const Download = () => {
+	console.log("Download")
+}
+</script>
 <template>
 	<div class="container">
 		<aside class="actions">
+			<img src="/tools svgs/add clip.svg" alt="Addclip" @click="Addclip">
 			<ul>
 				<li>
-					<img src="../assets/svgs/scissors-svgrepo-com.svg" alt="" width="30" style="display: block;">
+					<img src="/tools svgs/temp.svg" alt="Change_temp" @click="Change_temp">
 				</li>
 				<li>
-					<img src="../assets/svgs/fast-forward-button-svgrepo-com.svg" alt="" width="30" style="display: block;">
+					<img src="/tools svgs/text.svg" alt="Add_text" @click="Add_text">
 				</li>
 				<li>
-					<img src="../assets/svgs/clock-circular-outline-svgrepo-com.svg" alt="" width="30" style="display: block;">
+					<img src="/tools svgs/record.svg" alt="Record" @click="Record">
 				</li>
 				<li>
-					<img src="../assets/svgs/letter-t-svgrepo-com.svg" alt="" width="30" style="display: block;">
+					<img src="/tools svgs/cut.svg" alt="Cut" @click="Cut">
+				</li>
+				<li>
+					<img src="/tools svgs/stickers.svg" alt="Add_sticker" @click="Add_sticker">
+				</li>
+				<li>
+					<img src="/tools svgs/rewind.svg" alt="Rewind" @click="Rewind">
+				</li>
+				<li>
+					<img src="/tools svgs/download.svg" alt="Download" @click="Download">
 				</li>
 			</ul>
 		</aside>
 		<main>ы</main>
-		<aside class="clips">
-			<div class="button_container">
-				<label style="display: block;" for="addclip">Add clip</label>
-				<input type="file" accept=".mp4" id="addclip" style="display: none;" @change="AddClip"></input>
-			</div>
-			<ul>
-				<li v-for="clip in objects">
-					{{clip}}
-				</li>
-			</ul>
-		</aside>
 	</div>
 </template>
-<script>
-import { GetFFmpegStore } from '@/stores/FFmpegStore';
-import { ref } from 'vue';
-export default{
-  setup(){
-    const FFmpegStore = GetFFmpegStore()
-	const objects = ref([])
-	const AddClip = (event) => {
-		console.log('sd')
-		objects.value.push(event.target.files[0].name)
-	}
-    return{
-      FFmpegStore,
-	  objects,
-	  AddClip,
-    }
-  }
-}
-</script>
 <style lang="sass" scoped>
 @import "../src/assets/main.sass"
-
+img
+	display: block
+	cursor: pointer
 .container
 	display: flex
 	flex: 1
@@ -61,21 +69,20 @@ export default{
 	background-color: $dark2
 	flex: 1 
 	display: flex
+	flex-direction: column
 	margin-top: 80px
+	border: solid black 1px
 	ul
 		margin: auto
 		list-style: none
 		padding: 0
 		li
 			padding: 20px 0
-			border-bottom: solid $text-color 1px
-			border-top: solid $text-color 1px
 			display: flex
 			justify-content: center
-
 main
 	flex: 15
-	background-color: $text-color 
+	background-color: $dark2
 
 .clips
 	background-color: $dark2
