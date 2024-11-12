@@ -52,7 +52,9 @@ const Download = () => {
 				</li>
 			</ul>
 		</aside>
-		<main>ы</main>
+		<main>
+			<video src="../../public/Download.mp4" style=" height:90vh; width: 100%;" controls></video>
+		</main>
 	</div>
 </template>
 <style lang="sass" scoped>
@@ -60,11 +62,11 @@ const Download = () => {
 img
 	display: block
 	cursor: pointer
+	height: 10vh
 .container
 	display: flex
 	flex: 1
-	height: 100vh 
-
+	height: 100%
 .actions
 	background-color: $dark2
 	flex: 1 
@@ -77,9 +79,12 @@ img
 		list-style: none
 		padding: 0
 		li
-			padding: 20px 0
+			padding: 2vh 0
 			display: flex
 			justify-content: center
+			overflow: hidden
+			img
+				height: 4vh
 main
 	flex: 15
 	background-color: $dark2
