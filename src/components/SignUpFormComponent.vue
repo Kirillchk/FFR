@@ -5,7 +5,6 @@ import { GetFFmpegStore } from '@/stores/FFmpegStore';
 const store = GetFFmpegStore();
 const username = ref('');
 const password = ref('');
-const cookie = ref('');
 
 const changedusername = (event) => {
 	username.value = event.target.value;
@@ -24,7 +23,7 @@ const Submit = (event) => {
 };
 
 const LogIn = async () => {
-	cookie.value = await getcookie(username.value, password.value);
+	localStorage.setItem("JWT", await getcookie(username.value,password.value))
 };
 
 async function getcookie(name, password) {
@@ -52,27 +51,26 @@ const SignUp = () => {
 	console.log("Signing up");
 	console.log(username.value);
 	console.log(password.value);
-	console.log(`cookie is ${cookie.value}`)
+	console.log(`cookie is ${localStorage.getItem("JWT")}`)
 /********************* */
 const myHeaders = new Headers();
-myHeaders.append("Cookie", cookie.value);
+myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
 
 const formdata = new FormData();
-formdata.append("Name", "folthen");
+formdata.append("Name", "lol");
 
 const requestOptions = {
   method: "POST",
   headers: myHeaders,
   body: formdata,
   redirect: "follow",
-  credentials: "include"
+  credentials: "include"  // Это важно, чтобы браузер отправлял и получал куки
 };
 
 fetch("http://26.234.86.94:8080/api/videos/check/login", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
-
+	.then((response) => response.text())
+	.then((result) => console.log(result))
+	.catch((error) => console.error(error));
 /**************** */
 };
 </script>

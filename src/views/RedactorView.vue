@@ -1,4 +1,7 @@
 <script setup>
+import VideoContainer from '@/components/VideoContainer.vue';
+import { ref } from 'vue';
+const VideoContainerElement = ref(null)
 const Addclip = () => {
 	console.log("addclip")
 }
@@ -13,6 +16,7 @@ const Record = () => {
 }
 const Cut = () => {
 	console.log("Cut")
+	VideoContainerElement.value.ToggleClipSelector()
 }
 const Add_sticker = () => {
 	console.log("Add_sticker")
@@ -53,7 +57,7 @@ const Download = () => {
 			</ul>
 		</aside>
 		<main>
-			<video src="../../public/Download.mp4" style=" height:90vh; width: 100%;" controls></video>
+			<VideoContainer ref="VideoContainerElement"/>
 		</main>
 	</div>
 </template>
@@ -88,7 +92,9 @@ img
 main
 	flex: 15
 	background-color: $dark2
-
+	> *
+		justify-content: center
+		margin: auto
 .clips
 	background-color: $dark2
 	flex: 4 

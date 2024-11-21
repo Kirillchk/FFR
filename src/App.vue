@@ -26,7 +26,7 @@ const showSignUp = ref(false);
       </ul>
     </nav>
   </header>
-  <router-view />
+  <router-view  />
   <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm" @login="ToggleLogedIn"/>
 </template>
 

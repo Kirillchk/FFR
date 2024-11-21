@@ -15,9 +15,13 @@
 	position: relative
 	right: 290px
 	bottom: 200px
+	overflow: hidden
 main
-	margin-top: 325px
+	position: absolute
+	width: 100%
+	margin-top: 30vh
 	justify-content: center
+	overflow: hidden
 	> *
 		margin: auto
 		display: block
