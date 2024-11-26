@@ -1,5 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, defineProps, defineExpose } from 'vue';
+const props = defineProps({
+	VideoSrcProp: String
+})
+
 const videoElement = ref(null)
 const PlayerBarElement = ref(null)
 const IsPlaying = ref(false)
@@ -81,8 +85,8 @@ defineExpose({
 </script>
 <template>
 <div class="wraper">
-	<video ref="videoElement" v-if="true /*videoSrc*/" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData">  
-		<source src="/KEROSENE x COTTON EYE JOE.mp4" type="video/mp4"/>
+	<video ref="videoElement" v-if="VideoSrcProp" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData">  
+		<source :src="VideoSrcProp" type="video/mp4"/>
 		Your browser does not support the video tag.
 	</video>
 	<div class="custom_player" :style="{ width: barWidth + 'px'}">

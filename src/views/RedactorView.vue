@@ -1,6 +1,33 @@
 <script setup>
 import VideoContainer from '@/components/VideoContainer.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+
+const videoSrc = ref('')
+
+function GETVideo(){
+	videoSrc.value = ''
+	const myHeaders = new Headers();
+	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
+	const requestOptions = {
+	   method: 'GET',
+	   headers: myHeaders,
+	   redirect: 'follow'
+	};
+
+	fetch("http://26.234.86.94:8080/api/videos/GetVideo/1.mp4", requestOptions)
+	   .then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		} return response.blob();
+	   })
+	   .then(blob => {
+			videoSrc.value = URL.createObjectURL(blob);
+	   })
+	   .catch(error => console.error('Error:', error));
+}
+
+onMounted(GETVideo)
+
 const VideoContainerElement = ref(null)
 const Addclip = () => {
 	console.log("addclip")
@@ -16,10 +43,34 @@ const Record = () => {
 }
 const Cut = () => {
 	console.log("Cut")
-	VideoContainerElement.value.ToggleClipSelector()
+	/* */
+	const myHeaders = new Headers();
+	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
+	const formdata = new FormData();
+	formdata.append("startTime", "00:00:01");
+	formdata.append("endTime", "00:00:03");
+
+	const requestOptions = {
+	   method: 'PUT',
+	   headers: myHeaders,
+	   body: formdata,
+	   redirect: 'follow'
+	};
+
+	fetch("http://26.234.86.94:8080/api/videos/1.mp4/trim", requestOptions)
+	   .then(response => {
+			console.log("debug")
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+	    })
+	   .then(GETVideo)
+	/* */
+VideoContainerElement.value.ToggleClipSelector()
 }
 const Add_sticker = () => {
 	console.log("Add_sticker")
+	GETVideo();
 }
 const Rewind = () => {
 	console.log("Rewind")
@@ -57,7 +108,7 @@ const Download = () => {
 			</ul>
 		</aside>
 		<main>
-			<VideoContainer ref="VideoContainerElement"/>
+			<VideoContainer ref="VideoContainerElement" :VideoSrcProp="videoSrc"/>
 		</main>
 	</div>
 </template>

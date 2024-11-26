@@ -39,7 +39,7 @@ async function getcookie(name, password) {
 
 	try {
 		const response = await fetch("http://26.234.86.94:8080/api/user/login", requestOptions);
-		ret = await response.text(); // Ensure this matches the expected data format
+		ret = await response.text();
 		console.log(ret);
 	} catch (error) {
 		console.error(error);
