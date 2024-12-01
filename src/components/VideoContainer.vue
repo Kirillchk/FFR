@@ -1,8 +1,10 @@
 <script setup>
-import { ref, computed, defineProps, defineExpose } from 'vue';
+import { ref, computed, defineProps, defineExpose, defineEmits } from 'vue';
 const props = defineProps({
 	VideoSrcProp: String
 })
+
+const emit = defineEmits(['MinUpdated']);
 
 const videoElement = ref(null)
 const PlayerBarElement = ref(null)
@@ -16,7 +18,7 @@ const MinValue = ref(0)
 const MaxValue = ref(1)
 
 const ComputedTime = computed(() => {
-	return `${Math.floor(VideoTime.value/60)}:${Math.floor(VideoTime.value)}`
+	return `${Math.floor(VideoTime.value/60)}:${Math.floor(VideoTime.value)%60}`
 })
 const ComputedMin = computed(() => {
 	return duration.value * MinValue.value 
@@ -72,7 +74,8 @@ const OnMaxUpdated = (event) => {
 	videoElement.value.currentTime = ComputedMax.value
 }
 const Submit = () => {
-	console.log(`MIN:${ComputedMin.value} MAX:${ComputedMax.value} `)
+	emit('Submit_Range', ComputedMin.value, ComputedMax.value);
+	// console.log(`MIN:${ComputedMin.value} MAX:${ComputedMax.value} `)
 }
 const ToggleClipSelector = () => {
 	IsVisible.value = !IsVisible.value
@@ -140,6 +143,7 @@ defineExpose({
 </template>
 <style lang="sass" scoped>
 @import "../src/assets/main.sass"
+	
 video
 	display: block
 	margin: auto
