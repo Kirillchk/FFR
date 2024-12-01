@@ -25,13 +25,13 @@
 			margin: 40px auto
 			font-size: 2rem
 		:nth-child(3)
-			cursor: pointer
 			width: 400px
 			margin: auto
 			font-size: 3rem
 			border: $cyan solid
-			color: $cyan
 			border-radius: 200px
+			cursor: pointer
+			color: $cyan
 			&:hover
 				color: white
 				background-color: $cyan

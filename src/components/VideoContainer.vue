@@ -88,11 +88,11 @@ defineExpose({
 </script>
 <template>
 <div class="wraper">
-	<video ref="videoElement" v-if="VideoSrcProp" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData">  
+	<video ref="videoElement" v-if="VideoSrcProp" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData" style="width: 80vw;">  
 		<source :src="VideoSrcProp" type="video/mp4"/>
 		Your browser does not support the video tag.
 	</video>
-	<div class="custom_player" :style="{ width: barWidth + 'px'}">
+	<div class="custom_player" style="width: 80vw;">
 		<div class="play" @click="OnPlay">
 			<div v-if="IsPlaying">║</div>
 			<div v-else>▶</div>
@@ -110,7 +110,7 @@ defineExpose({
 			{{ ComputedTime }}
 		</div>
 	</div>
-	<div v-if="IsVisible" class="clip_selector" :style="{ width: barWidth + 'px'}">
+	<div v-if="IsVisible" class="clip_selector" style="width: 80vw;">
 		<div style="display: flex; width: inherit;">
 			<input
 			ref="MaxElement"
@@ -121,7 +121,7 @@ defineExpose({
 			value="1"
 			style="width:inherit" 
 			@input="OnMaxUpdated"/>
-			<div style="width: 20px;"> {{ MaxValue }} max</div>
+			<div style="width: 20px;"> </div>
 		</div>
 		<div style="display: flex; width: inherit;">
 			<input
@@ -133,10 +133,10 @@ defineExpose({
 			value="0"
 			style="width:inherit" 
 			@input="OnMinUpdated"/>
-			<div style="width: 20px;"> {{ MinValue }} min</div>
+			<div style="width: 20px;"></div>
 		</div>
 		<div class="button" @click="Submit">
-			dsdsa
+			Submit clip
 		</div>
 	</div>
 </div>
@@ -162,4 +162,12 @@ video
 .clip_selector
 	display: block
 	margin: auto
+.button
+	text-align: center
+	cursor: pointer
+	color: $cyan
+	&:hover
+		color: white
+		background-color: $cyan
+
 </style>
