@@ -3,15 +3,12 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import SignUpFormComponent from './components/SignUpFormComponent.vue';
-import { GetFFmpegStore } from '@/stores/FFmpegStore';
-
+import CreateProject from './components/CreateProject.vue';
 function ToggleForm(){
 	showSignUp.value = !showSignUp.value
 }
-function ToggleLogedIn(){
-	GetFFmpegStore.value = !GetFFmpegStore
-}
 const showSignUp = ref(false);
+const showNewproject = ref(false)
 </script>
 
 <template>
@@ -22,12 +19,14 @@ const showSignUp = ref(false);
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/Redactor">Redactor</router-link></li>
         <li><router-link to="/Support">Support</router-link></li>
+        <li><router-link to="/Cotalog">Cotalog</router-link></li>
         <li class="Login_button" @click="ToggleForm">Login</li>
       </ul>
     </nav>
   </header>
-  <router-view/>
-  <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm" @login="ToggleLogedIn"/>
+  <router-view @CreateNew="showNewproject = !showNewproject"/>
+  <sign-up-form-component v-if="showSignUp" class="signup" @close="ToggleForm"/>
+  <create-project v-if="showNewproject" class="signup" @close="showNewproject = !showNewproject"/>
 </template>
 
 <style scoped lang="sass">

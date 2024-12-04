@@ -4,7 +4,7 @@ const props = defineProps({
 	VideoSrcProp: String
 })
 
-const emit = defineEmits(['MinUpdated']);
+defineEmits(['Submit_Range']);
 
 const videoElement = ref(null)
 const PlayerBarElement = ref(null)
@@ -73,10 +73,6 @@ const OnMaxUpdated = (event) => {
 	}
 	videoElement.value.currentTime = ComputedMax.value
 }
-const Submit = () => {
-	emit('Submit_Range', ComputedMin.value, ComputedMax.value);
-	// console.log(`MIN:${ComputedMin.value} MAX:${ComputedMax.value} `)
-}
 const ToggleClipSelector = () => {
 	IsVisible.value = !IsVisible.value
 	MinValue.value = 0
@@ -121,7 +117,6 @@ defineExpose({
 			value="1"
 			style="width:inherit" 
 			@input="OnMaxUpdated"/>
-			<div style="width: 20px;"> </div>
 		</div>
 		<div style="display: flex; width: inherit;">
 			<input
@@ -133,9 +128,8 @@ defineExpose({
 			value="0"
 			style="width:inherit" 
 			@input="OnMinUpdated"/>
-			<div style="width: 20px;"></div>
 		</div>
-		<div class="button" @click="Submit">
+		<div class="button" @click="$emit('Submit_Range', ComputedMin, ComputedMax)">
 			Submit clip
 		</div>
 	</div>
@@ -169,5 +163,4 @@ video
 	&:hover
 		color: white
 		background-color: $cyan
-
 </style>
