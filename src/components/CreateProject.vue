@@ -5,7 +5,7 @@ const ProjectName = ref('');
 const emoji = ref('');
 
 function Submit() {
-	console.log(`NAME${ProjectName.value}, EMO${emoji.value}`);
+	console.log(`NAMEЁ${ProjectName.value}, EMO${emoji.value}`);
 }
 </script>
 <template>

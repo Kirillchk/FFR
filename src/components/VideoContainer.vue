@@ -84,7 +84,7 @@ defineExpose({
 </script>
 <template>
 <div class="wraper">
-	<video ref="videoElement" v-if="VideoSrcProp" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData" style="width: 80vw;">  
+	<video ref="videoElement" v-if="VideoSrcProp" @timeupdate="OnTimeUpdate" @loadedmetadata="initializeVideoData" style="width: 80vw; max-height: 80vh;">  
 		<source :src="VideoSrcProp" type="video/mp4"/>
 		Your browser does not support the video tag.
 	</video>

@@ -6,7 +6,56 @@ const videoSrc = ref('')
 const SlowdownFactor = ref('')
 const fileInput = ref(null)
 const VideoContainerElement = ref(null)
-const ShowSlowdownfactor = ref(false)
+const ShowSlowdownfactor = ref(true)
+/*
+const WebcamVid = ref(null);
+const isRecording = ref(false);
+const downloadLink = ref(null);
+const mediaDevices = navigator.mediaDevices;
+let mediaRecorder;
+let recordedChunks = [];
+
+const openWebcam = () => {
+    mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+            if (WebcamVid.value) {
+                WebcamVid.value.srcObject = stream;
+                WebcamVid.value.play();
+                // Initialize MediaRecorder for the stream.
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    recordedChunks = [];
+                    downloadLink.value = URL.createObjectURL(blob);
+                };
+            }
+        })
+        .catch((error) => {
+            alert("Error accessing the camera: " + error);
+        });
+};
+
+const startRecording = () => {
+    if (mediaRecorder && mediaRecorder.state === 'inactive') {
+        recordedChunks = [];
+        mediaRecorder.start();
+        isRecording.value = true;
+    }
+};
+
+const stopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        isRecording.value = false;
+    }
+};
+*/
 function GETVideo(){
 	videoSrc.value = ''
 	const myHeaders = new Headers();
@@ -30,6 +79,7 @@ function GETVideo(){
 onMounted(() => {
 	localStorage.setItem('CurrentVideo', '2.mp4')
 	GETVideo()
+    // WebcamVid.value.muted = true; 
 })
 const Addclip = () => {
 	console.log("addclip")
@@ -42,6 +92,7 @@ const FileAdded = (event) => {
         alert('Please select a video file before uploading.');
         return;
     }
+	/*
 	const myHeaders = new Headers()
 	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
 	const formdata = new FormData()
@@ -61,6 +112,7 @@ const FileAdded = (event) => {
 	    })
 		.then(GETVideo)
 		.catch(error => console.log('error', error));
+	*/
 }
 const UpdateSlowdownFactor = (event) => {
 	const NewValue = event.target.value
@@ -74,9 +126,6 @@ const UpdateSlowdownFactor = (event) => {
 }
 const Change_temp = () => {
 	ShowSlowdownfactor.value = false
-}
-const Add_text = () => {
-	console.log("Add_text")
 }
 const Record = () => {
 	console.log("Record")
@@ -119,10 +168,6 @@ const HandleSubmit = (min, max) => {
 	.then(GETVideo)
 	.catch(error => console.log('error', error));
 }
-const Add_sticker = () => {
-	console.log("Add_sticker")
-	GETVideo();
-}
 const Rewind = () => {
 	console.log("Rewind")
 	/* */
@@ -149,6 +194,10 @@ const Rewind = () => {
 }
 const Download = () => {
 	console.log("Download")
+	const a = document.createElement('a');
+    a.href = videoSrc.value;
+    a.download = 'recording.mp4';
+    a.click();
 }
 const SubmitTempChange = () => {
 	ShowSlowdownfactor.value = true
@@ -187,16 +236,10 @@ const SubmitTempChange = () => {
 					<input v-if="!ShowSlowdownfactor" type="number" min="0.5" max="2" step="0.05" value="1" @change="UpdateSlowdownFactor">
 				</li>
 				<li>
-					<img src="/tools svgs/text.svg" alt="Add_text" @click="Add_text">
-				</li>
-				<li>
 					<img src="/tools svgs/record.svg" alt="Record" @click="Record">
 				</li>
 				<li>
 					<img src="/tools svgs/cut.svg" alt="Cut" @click="Cut">
-				</li>
-				<li>
-					<img src="/tools svgs/stickers.svg" alt="Add_sticker" @click="Add_sticker">
 				</li>
 				<li>
 					<img src="/tools svgs/rewind.svg" alt="Rewind" @click="Rewind">

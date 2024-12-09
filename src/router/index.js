@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RedactorView from '../views/RedactorView.vue'
 import SupportView from '../views/SupportView.vue'
 import Cotalog from '../views/Cotalog.vue'
+import Test from '../views/test.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/Cotalog',
       name: 'cotalog',
       component: Cotalog
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     },
   ]
 })
