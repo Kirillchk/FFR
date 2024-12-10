@@ -42,6 +42,7 @@ const openWebcam = () => {
 };
 
 const startRecording = () => {
+	if (!mediaRecorder) { openWebcam() }
     if (mediaRecorder && mediaRecorder.state === 'inactive') {
         recordedChunks = [];
         mediaRecorder.start();

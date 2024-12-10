@@ -1,61 +1,15 @@
 <script setup>
 import VideoContainer from '@/components/VideoContainer.vue';
 import { ref, onMounted } from 'vue';
+import { API_BASE_URL } from "@/constants";
 
+const Styleforweb = ref('display: none')
 const videoSrc = ref('')
 const SlowdownFactor = ref('')
 const fileInput = ref(null)
 const VideoContainerElement = ref(null)
 const ShowSlowdownfactor = ref(true)
-/*
-const WebcamVid = ref(null);
-const isRecording = ref(false);
-const downloadLink = ref(null);
-const mediaDevices = navigator.mediaDevices;
-let mediaRecorder;
-let recordedChunks = [];
 
-const openWebcam = () => {
-    mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-            if (WebcamVid.value) {
-                WebcamVid.value.srcObject = stream;
-                WebcamVid.value.play();
-                // Initialize MediaRecorder for the stream.
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        recordedChunks.push(event.data);
-                    }
-                };
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    recordedChunks = [];
-                    downloadLink.value = URL.createObjectURL(blob);
-                };
-            }
-        })
-        .catch((error) => {
-            alert("Error accessing the camera: " + error);
-        });
-};
-
-const startRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'inactive') {
-        recordedChunks = [];
-        mediaRecorder.start();
-        isRecording.value = true;
-    }
-};
-
-const stopRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-        isRecording.value = false;
-    }
-};
-*/
 function GETVideo(){
 	videoSrc.value = ''
 	const myHeaders = new Headers();
@@ -65,7 +19,7 @@ function GETVideo(){
 	   headers: myHeaders,
 	   redirect: 'follow'
 	};
-	fetch(`http://26.234.86.94:8080/api/videos/GetVideo/${localStorage.getItem('CurrentVideo')}`, requestOptions)
+	fetch(`${API_BASE_URL}api/videos/GetVideo/${localStorage.getItem('CurrentVideo')}`, requestOptions)
 	   .then(response => {
 		if (!response.ok) {
 			throw new Error('Network response was not ok');
@@ -76,10 +30,6 @@ function GETVideo(){
 		})
 		.catch(error => console.error('Error:', error));
 }
-onMounted(() => {
-	GETVideo()
-    // WebcamVid.value.muted = true; 
-})
 const Addclip = () => {
 	console.log("addclip")
 	fileInput.value.click()
@@ -102,7 +52,7 @@ const FileAdded = (event) => {
 	   body: formdata,
 	   redirect: 'follow'
 	};
-    fetch(`http://26.234.86.94:8080/api/videos/${localStorage.getItem('CurrentVideo')}/addClip`, requestOptions)
+    fetch(`${API_BASE_URL}api/videos/${localStorage.getItem('CurrentVideo')}/addClip`, requestOptions)
 		.then(response => {
 			console.log("debug")
 			if (!response.ok) {
@@ -124,9 +74,6 @@ const UpdateSlowdownFactor = (event) => {
 }
 const Change_temp = () => {
 	ShowSlowdownfactor.value = false
-}
-const Record = () => {
-	console.log("Record")
 }
 const Cut = () => {
 	console.log("Cut")
@@ -156,7 +103,7 @@ const HandleSubmit = (min, max) => {
 	   body: formdata,
 	   redirect: 'follow'
 	};
-	fetch(`http://26.234.86.94:8080/api/videos/${localStorage.getItem('CurrentVideo')}/trim`, requestOptions)
+	fetch(`${API_BASE_URL}api/videos/${localStorage.getItem('CurrentVideo')}/trim`, requestOptions)
 	.then(response => {
 		console.log("debug")
 		if (!response.ok) {
@@ -179,7 +126,7 @@ const Rewind = () => {
 	   body: formdata,
 	   redirect: 'follow'
 	};
-	fetch(`http://26.234.86.94:8080/api/videos/${localStorage.getItem('CurrentVideo')}/revers`, requestOptions)
+	fetch(`${API_BASE_URL}api/videos/${localStorage.getItem('CurrentVideo')}/revers`, requestOptions)
 		.then(response => {
 			console.log("debug")
 			if (!response.ok) {
@@ -210,7 +157,7 @@ const SubmitTempChange = () => {
 	   body: formdata,
 	   redirect: 'follow'
 	};
-	fetch(`http://26.234.86.94:8080/api/videos/${localStorage.getItem('CurrentVideo')}/adjust`, requestOptions)
+	fetch(`${API_BASE_URL}api/videos/${localStorage.getItem('CurrentVideo')}/adjust`, requestOptions)
 		.then(response => {
 			console.log("debug")
 			if (!response.ok) {
@@ -221,12 +168,86 @@ const SubmitTempChange = () => {
 		.catch(error => console.log('error', error));
 	/* */
 }
+
+const WebcamVid = ref(null);
+let mediaRecorder;
+let recordedChunks = [];
+const isRecording = ref(false);
+const downloadLink = ref(null);
+const mediaDevices = navigator.mediaDevices;
+
+const openWebcam = () => {
+    return new Promise((resolve, reject) => {
+        mediaDevices
+            .getUserMedia({ video: true, audio: true })
+            .then((stream) => {
+                const hasVideo = stream.getVideoTracks().length > 0;
+                if (!hasVideo) {
+                    alert("Webcam access is required for this feature.");
+                    reject(new Error("No video tracks available."));
+                    return;
+                }
+                if (WebcamVid.value) {
+                    WebcamVid.value.srcObject = stream;
+                    WebcamVid.value.play();
+
+                    // Initialize MediaRecorder for the stream.
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                        recordedChunks = [];
+                        downloadLink.value = URL.createObjectURL(blob);
+                    };
+
+                    resolve(); // Resolve once everything is ready.
+                } else {
+                    reject(new Error("Webcam element not initialized."));
+                }
+            })
+            .catch((error) => {
+                alert("Error accessing the camera: " + error);
+                reject(error);
+            });
+    });
+};
+const startRecord = async () => {
+    await openWebcam(); // Ensure webcam stream is ready.
+    if (mediaRecorder && mediaRecorder.state === 'inactive') {
+        recordedChunks = [];
+        mediaRecorder.start();
+        isRecording.value = true; // Update the reactive state.
+		Styleforweb.value = 'display: block;'
+    }
+};
+const stopRecord = () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        isRecording.value = false; // Update the reactive state.
+		Styleforweb.value = 'display: none;'
+    }
+
+    setTimeout(() => {
+        const a = document.createElement('a');
+        a.href = downloadLink.value;
+        a.download = 'recording.webm';
+        a.click();
+    }, 100);
+};
+onMounted(() => {
+	GETVideo()
+    WebcamVid.value.muted = true; 
+})
 </script>
 <template>
 	<div class="container">
 		<aside class="actions">
 			<img src="/tools svgs/add clip.svg" alt="Addclip" @click="Addclip">
-			<input type="file" ref="fileInput" accept="video/mp4" style="display: none;" @change="FileAdded">
+			<input type="file" ref="fileInput" accept="video/mp4, video/webm" style="display: none;" @change="FileAdded">
 			<ul>
 				<li>
 					<img v-if="ShowSlowdownfactor" src="/tools svgs/temp.svg" alt="Change_temp" @click="Change_temp">
@@ -234,7 +255,8 @@ const SubmitTempChange = () => {
 					<input v-if="!ShowSlowdownfactor" type="number" min="0.5" max="2" step="0.05" value="1" @change="UpdateSlowdownFactor">
 				</li>
 				<li>
-					<img src="/tools svgs/record.svg" alt="Record" @click="Record">
+					<img v-if="!isRecording" src="/tools svgs/record.svg" alt="Record" @click="startRecord">
+					<img v-else src="/tools svgs/record.svg" alt="Record" style="filter: hue-rotate(90deg) brightness(0.5);" @click="stopRecord">
 				</li>
 				<li>
 					<img src="/tools svgs/cut.svg" alt="Cut" @click="Cut">
@@ -249,11 +271,19 @@ const SubmitTempChange = () => {
 		</aside>
 		<main>
 			<VideoContainer ref="VideoContainerElement" :VideoSrcProp="videoSrc" @Submit_Range="HandleSubmit"/>
+	        <div>
+	            <video class="WebcamVid" ref="WebcamVid" :style="Styleforweb"></video>
+	        </div>
 		</main>
 	</div>
 </template>
 <style lang="sass" scoped>
 @import "../src/assets/main.sass"
+.WebcamVid
+	position: absolute
+	top: 10vh
+	width: 80vw
+	max-height: 80vh
 img
 	display: block
 	cursor: pointer

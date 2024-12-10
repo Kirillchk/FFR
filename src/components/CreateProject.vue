@@ -1,6 +1,7 @@
 <script setup>
 import { ref, defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
+import { API_BASE_URL } from "@/constants";
 const emit = defineEmits(['close'])
 const router = useRouter();
 
@@ -20,14 +21,14 @@ const FileAdded = (event) => {
 	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
 	const formdata = new FormData()
 	formdata.append('video', file, file.name);
-	formdata.append('namevideo', ProjectName.value)
+	formdata.append("smile", `${emoji.value}`);
 	const requestOptions = {
 		method: 'POST',
 	   headers: myHeaders,
 	   body: formdata,
 	   redirect: 'follow'
 	};
-    fetch("http://26.234.86.94:8080/api/videos/save", requestOptions)
+    fetch(`${API_BASE_URL}api/videos/${ProjectName.value}/save`, requestOptions)
 		.then(response => {
 			console.log("debug")
 			if (!response.ok) {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, defineEmits} from 'vue';
 import { useRouter } from 'vue-router';
+import { API_BASE_URL } from "@/constants";
 const router = useRouter();
 defineEmits(['CreateNew'])
 const Data = ref([])
@@ -65,7 +66,7 @@ const DeleteProject = (ProjectName) => {
 		headers: myHeaders,
 		redirect: 'follow'
 	};
-	fetch(`http://26.234.86.94:8080/api/videos/DeleteVideo/${ProjectName}`, requestOptions)
+	fetch(`${API_BASE_URL}api/videos/DeleteVideo/${ProjectName}`, requestOptions)
 		.then(response => response.text)
 		.then(result => console.log(result))
 		.then(GetVideos)
@@ -79,7 +80,7 @@ const GetVideos = () =>{
 		headers: myHeaders,
 		redirect: 'follow'
 	};
-	fetch("http://26.234.86.94:8080/api/videos/GetAllVideoInfo", requestOptions)
+	fetch(`${API_BASE_URL}api/videos/GetAllVideoInfo`, requestOptions)
 		.then(response => response.json())
 		.then(result => {
 			Data.value = result.$values;

@@ -1,8 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { GetFFmpegStore } from '@/stores/FFmpegStore';
-
-const store = GetFFmpegStore();
+import { API_BASE_URL } from "@/constants";
 const username = ref('');
 const password = ref('');
 
@@ -19,7 +17,6 @@ const changedpassword = (event) => {
 const Submit = (event) => {
 	event.preventDefault();
 	console.log("Submitting");
-	store.IsSignedIn = true;
 };
 
 const LogIn = async () => {
@@ -38,7 +35,7 @@ async function getcookie(name, password) {
 	};
 
 	try {
-		const response = await fetch("http://26.234.86.94:8080/api/user/login", requestOptions);
+		const response = await fetch(`${API_BASE_URL}api/user/login`, requestOptions);
 		ret = await response.text();
 		console.log(ret);
 	} catch (error) {
@@ -67,7 +64,7 @@ const requestOptions = {
   credentials: "include"  // Это важно, чтобы браузер отправлял и получал куки
 };
 
-fetch("http://26.234.86.94:8080/api/videos/check/login", requestOptions)
+fetch(`${API_BASE_URL}api/videos/check/login`, requestOptions)
 	.then((response) => response.text())
 	.then((result) => console.log(result))
 	.catch((error) => console.error(error));
