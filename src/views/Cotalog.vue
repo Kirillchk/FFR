@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onMounted, defineEmits} from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 defineEmits(['CreateNew'])
 const Data = ref([])
 const TipoData = [
@@ -69,7 +71,7 @@ const DeleteProject = (ProjectName) => {
 		.then(GetVideos)
 		.catch(error => console.log('error', error));
 }
-function GetVideos(){
+const GetVideos = () =>{
 	const myHeaders = new Headers()
 	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
 	const requestOptions = {
@@ -80,10 +82,15 @@ function GetVideos(){
 	fetch("http://26.234.86.94:8080/api/videos/GetAllVideoInfo", requestOptions)
 		.then(response => response.json())
 		.then(result => {
-			Data.value = result.$values; // Assign the correct nested array
+			Data.value = result.$values;
+			console.log("DATA recived")
 		})
 		.catch(error => console.log('error', error));
 }
+const setCurrentVideo = (videoName) => {
+  localStorage.setItem('CurrentVideo', videoName);
+  router.push({ name: 'redactor' })
+};
 onMounted(GetVideos)
 </script>
 <!--
@@ -104,7 +111,7 @@ onMounted(GetVideos)
 <template>
   <div class="video_grid">
     <div v-for="(item, index) in Data" :key="index">
-      <div class="logo_smail">
+      <div class="logo_smail" @click="setCurrentVideo(item.nameVideo)">
         {{ item.smalic }}
       </div>
 	  <div class="container">

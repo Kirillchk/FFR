@@ -1,11 +1,43 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+import { useRouter } from 'vue-router';
+const emit = defineEmits(['close'])
+const router = useRouter();
 
 const ProjectName = ref('');
 const emoji = ref('');
 
 function Submit() {
-	console.log(`NAMEЁ${ProjectName.value}, EMO${emoji.value}`);
+}
+const FileAdded = (event) => {
+	console.log("File added")
+	const file = event.target.files[0]
+	if (!file) {
+        alert('Please select a video file before uploading.');
+        return;
+    }
+	const myHeaders = new Headers()
+	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
+	const formdata = new FormData()
+	formdata.append('video', file, file.name);
+	formdata.append('namevideo', ProjectName.value)
+	const requestOptions = {
+		method: 'POST',
+	   headers: myHeaders,
+	   body: formdata,
+	   redirect: 'follow'
+	};
+    fetch("http://26.234.86.94:8080/api/videos/save", requestOptions)
+		.then(response => {
+			console.log("debug")
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			localStorage.setItem('CurrentVideo', ProjectName.value);
+			router.push({ name: 'redactor' })
+			emit('close');
+	    })
+		.catch(error => console.log('error', error));
 }
 </script>
 <template>
@@ -29,6 +61,11 @@ function Submit() {
 						['😂', '❤️', '🤣', '😍', '😭', '😊', '🙏', '🥰', '😘', '😅', '👍', '💕', '🔥', '😢', '🎉', '😁', '🤔', '🥳', '😎', '🙌', '✨', '🤗', '😡', '🤩', '💔']"
 						:value="val">{{ val }}</option>
 					</select>
+				</div>
+				<div class="field">
+					<label for="Video_file">Video</label>
+					<input id="Video_file" style="display: none;" type="file" accept="video/mp4" @change="FileAdded">
+					<label for="Video_file">Chose</label>
 				</div>
 				<div class="submit">
 					<label for="submit">Create new project</label>

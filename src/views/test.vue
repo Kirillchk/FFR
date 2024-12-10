@@ -12,6 +12,12 @@ const openWebcam = () => {
     mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
+			const hasVideo = stream.getVideoTracks().length > 0;
+            const hasAudio = stream.getAudioTracks().length > 0;
+            if (!hasVideo) {
+                alert("Webcam access is required for this feature.");
+                return;
+            }
             if (WebcamVid.value) {
                 WebcamVid.value.srcObject = stream;
                 WebcamVid.value.play();

@@ -77,7 +77,6 @@ function GETVideo(){
 		.catch(error => console.error('Error:', error));
 }
 onMounted(() => {
-	localStorage.setItem('CurrentVideo', '2.mp4')
 	GETVideo()
     // WebcamVid.value.muted = true; 
 })
@@ -92,18 +91,18 @@ const FileAdded = (event) => {
         alert('Please select a video file before uploading.');
         return;
     }
-	/*
 	const myHeaders = new Headers()
 	myHeaders.append("Authorization", `Bearer ${localStorage.getItem("JWT")}`);
 	const formdata = new FormData()
 	formdata.append('video', file, file.name);
+	formdata.append("point", "true");
 	const requestOptions = {
-	   method: 'POST',
+	   method: 'PUT',
 	   headers: myHeaders,
 	   body: formdata,
 	   redirect: 'follow'
 	};
-    fetch("http://26.234.86.94:8080/api/videos/save", requestOptions)
+    fetch(`http://26.234.86.94:8080/api/videos/${localStorage.getItem('CurrentVideo')}/addClip`, requestOptions)
 		.then(response => {
 			console.log("debug")
 			if (!response.ok) {
@@ -112,7 +111,6 @@ const FileAdded = (event) => {
 	    })
 		.then(GETVideo)
 		.catch(error => console.log('error', error));
-	*/
 }
 const UpdateSlowdownFactor = (event) => {
 	const NewValue = event.target.value
